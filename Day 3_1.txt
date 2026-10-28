@@ -1,0 +1,124 @@
+MegaWorld.Inc
+1220 agents
+10.50.0.0 /16
+
+C:1220 = 11 bits
+S:32 - 11 = /21 255.255.248.0
+I:(3rd Octet, 8i)
+
+Net Address: 10.50.8.0 /21
+First IP: 10.50.8.1 /21
+Last IP:10.50.15.254 /21
+Broadcast:10.50.15.255 /21
+Next Address: 10.50.16.0 /?
+
+
+cardinal rules:
+1. ping dikit
+2. route not dikit
+
+R1:
+conf t
+no ip route 10.1.1.4 255.255.255.252 10.1.1.2
+no ip route 10.1.1.8 255.255.255.252 10.1.1.2
+end
+
+R2:
+conf t
+no ip route 10.1.1.8 255.255.255.252 10.1.1.6
+end
+
+
+R3:
+conf t
+no ip route 10.1.1.0 255.255.255.252 10.1.1.5
+end
+
+R4:
+conf t
+no ip route 10.1.1.0 255.255.255.252 10.1.1.9
+no ip route 10.1.1.4 255.255.255.252 10.1.1.9
+end
+
+
+
+http://208.8.8.113/otrs/index.pl
+
+admin
+C1sc0123
+
+http://208.8.8.113/otrs/customer.pl
+user1
+C1sc0123
+
+
+enable
+conf t
+hostname F1K-NET
+username admin privilege 15 secret pass
+no logging console
+end
+
+conf t
+username admin privilege 15 secret pass
+line vty 0 14
+exec-timeout 0 0 
+transport input all
+login local
+end
+
+en
+conf t
+ip access-list standard NOPORN 
+DENY 66.250.0.0     0.0.255.255
+DENY 104.21.0.0     0.0.255.255
+DENY 172.67.146.93  0.0.0.0
+DENY 104.16.4.81    0.0.0.0
+DENY 89.222.127.8   0.0.0.0
+DENY 64.98.135.95   0.0.0.0
+DENY 208.77.0.0     0.0.255.255
+Permit Any
+Int g1
+ip access-group NOPORN in
+end
+
+
+conf t
+int g1
+no ip access-group NOPORN in
+end
+
+
+
+config t
+NO ip access-list standard NOISKUL
+ip access-list standard NOISKUL
+DENY   172.67.204.208   0.0.255.255
+DENY   155.137.92.102   0.0.255.255
+DENY   113.19.135.198   0.0.255.255
+Permit Any
+Int Gi 1
+ ip access-group NOISKUL in
+end
+
+conf t
+int Gi1
+no ip access-group NOISKUL In
+end
+
+
+
+config t
+NO ip access-list standard NOTORS
+ip access-list standard NOTORS
+DENY   __.__.__.__   0.0.255.255
+DENY   __.__.__.__   0.0.255.255
+DENY   __.__.__.__   0.0.255.255
+DENY   __.__.__.__   0.0.255.255
+DENY   __.__.__.__   0.0.255.255
+Permit Any
+Int Gi 1
+ ip access-group NOTORS in
+end
+no ip access-group 
+

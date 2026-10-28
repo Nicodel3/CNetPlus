@@ -1,0 +1,19 @@
+CoreTaas 10.31.1.4
+
+conf t
+ip routing
+int fa0/9
+no switchport
+no ip add 10.0.1.25 255.255.255.224
+no shut
+end
+
+CoreBaba 10.31.1.2
+
+conf t
+ip routing
+int fa0/9
+no switchport
+no ip add 10.0.1.25 255.255.255.224
+no shut
+end
